@@ -3,7 +3,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import jwt from 'jsonwebtoken';
 const authenticated = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
 
-    jwt.verify(req.headers.authorization, process.env.secret, async function (err, decoded) {
+    jwt.verify(req.cookies.auth, process.env.secret, async function (err, decoded) {
 
         if (!err && decoded) {
 

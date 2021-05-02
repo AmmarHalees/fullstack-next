@@ -1,7 +1,7 @@
 const sqlite = require('sqlite');
 const { compare } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
-
+import cookie from 'cookie';
 
 export default async (req, res) => {
 
@@ -21,13 +21,27 @@ export default async (req, res) => {
 
                     const claims = { sub: person.id, name: person.name };// the body
                     const jwt = sign(claims, process.env.secret, { expiresIn: '1h' })
-                    res.status(200).json({ authToken: jwt });
+
+                    res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, {
+
+                        httpOnly: true, // js has no access
+                        secure: process.env.NODE_ENV !== 'development', //cookie only transfered over https
+                        sameSite: 'strict',
+                        maxAge: 3600,
+                        path: "/"
+
+
+                    }))
+
 
                 } else {
 
                     res.status(400).json({ message: 'Incorrect password' })
 
                 }
+
+
+                res.status(200).json(person)
 
             })
 
