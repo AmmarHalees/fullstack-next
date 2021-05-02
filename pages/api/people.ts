@@ -1,12 +1,17 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import authenticated from "../../middlewares/authenticated";
 const sqlite = require('sqlite');
 
-export default async (req, res) => {
+
+
+
+export default authenticated(async (req: NextApiRequest, res: NextApiResponse) => {
 
   const db = await sqlite.open('./mydb.sqlite');
 
   if (req.method === 'GET') {
 
-    const person = await db.all('select * from person');
+    const person = await db.all('select email,name,id from person');
 
     res.status(200).json(person);
 
@@ -18,4 +23,4 @@ export default async (req, res) => {
 
   }
 
-}
+})

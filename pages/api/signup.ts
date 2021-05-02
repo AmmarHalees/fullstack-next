@@ -22,7 +22,7 @@ export default async (req, res) => {
             result.finalize();
 
 
-            const person = await db.get('select * from person');
+            const person = await db.all('select * from person');
 
             res.status(200).json(person);
 
