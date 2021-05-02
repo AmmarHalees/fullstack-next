@@ -1,13 +1,13 @@
 
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import jwt from 'jsonwebtoken';
-const authenticated = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
+const authenticated = (originalFunction: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
 
     jwt.verify(req.cookies.auth, process.env.secret, async function (err, decoded) {
 
         if (!err && decoded) {
 
-            return await fn(req, res)
+            return await originalFunction(req, res)
 
         } else {
 

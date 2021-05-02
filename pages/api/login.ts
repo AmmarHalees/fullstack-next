@@ -19,7 +19,7 @@ export default async (req, res) => {
 
                 if (!err && result) {
 
-                    const claims = { sub: person.id, name: person.name };// the body
+                    const claims = { sub: { id: person.id, name: person.name } };// the body
                     const jwt = sign(claims, process.env.secret, { expiresIn: '1h' })
 
                     res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, {
@@ -30,7 +30,6 @@ export default async (req, res) => {
                         maxAge: 3600,
                         path: "/"
 
-
                     }))
 
 
@@ -40,18 +39,15 @@ export default async (req, res) => {
 
                 }
 
-
                 res.status(200).json(person)
 
             })
-
 
         } else {
 
             res.status(404).json({ message: 'not found' })
 
         }
-
 
     }
 

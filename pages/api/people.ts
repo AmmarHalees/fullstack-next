@@ -11,9 +11,9 @@ export default authenticated(async (req: NextApiRequest, res: NextApiResponse) =
 
   if (req.method === 'GET') {
 
-    const person = await db.all('select email,name,id from person');
+    const people = await db.all('select email,name,id from person');
 
-    res.status(200).json(person);
+    res.status(200).json(people);
 
   }
 
